@@ -1295,3 +1295,7 @@ override fun playNextVideo() {
 ---
 
 For any question feel free to [open an issue on the GitHub repository](https://github.com/PierfrancescoSoffritti/android-youtube-player/issues).
+
+## Local AAR Build Steps for Core
+cd core
+./../gradlew signAarPublication

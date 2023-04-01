@@ -155,25 +155,7 @@ internal class WebViewYouTubePlayer constructor(
 private class MyWebViewClient : WebViewClient() {
 
   override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-//    Log.i("UrlLoading", "shouldOverrideUrl: $url")
-    val host = Uri.parse(url).host
-//    Log.i("UrlLoading", "shouldOverrideUrlLoading: $host")
-    if ((host != null) && (host.contains("youtube", true) ||
-              host.contains("youtu.be", true) ||
-              host.contains("twitter", true) ||
-              host.contains("facebook", true) ||
-              host.contains("google", true))
-    ) {
-      return true
-    } else if ((url != null) && (url.contains("youtube.com", true) ||
-              url.contains("youtu.be", true) ||
-              url.contains("twitter.com", true) ||
-              url.contains("facebook.com", true) ||
-              url.contains("google.com", true))
-    ) {
-      return true
-    }
-    return false
+    return true
   }
 }
 

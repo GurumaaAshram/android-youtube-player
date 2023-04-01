@@ -166,5 +166,84 @@
       player.toggleFullscreen();
     }
 
+    function hideVideoTitle() {
+      hideVideoTitleOnce()
+      setInterval(hideVideoTitleOnce, 1000);
+    }
+
+    function hideVideoTitleOnce() {
+      const playerIFrame = document.querySelector("iframe");
+      if (!playerIFrame) {
+        return;
+      }
+
+      const frameDoc = playerIFrame.contentDocument;
+      if (!frameDoc) {
+        return;
+      }
+
+      const title = frameDoc.querySelector('.ytp-chrome-top');
+      if (title) {
+        title.style.display = 'none';
+      }
+    }
+
+    function hideTabletPopup() {
+      hideTabletPopupOnce()
+      setInterval(hideTabletPopupOnce, 1000);
+    }
+
+    function hideTabletPopupOnce() {
+      const playerIFrame = document.querySelector("iframe");
+      if (!playerIFrame) {
+        return;
+      }
+
+      const frameDoc = playerIFrame.contentDocument;
+      if (!frameDoc) {
+        return;
+      }
+
+      const collection = frameDoc.getElementsByClassName("ytp-pause-overlay-container")[0];
+      if (!collection) {
+        return;
+      }
+      collection.style.display = 'none';
+    }
+
+    function hideBranding() {
+      hideBrandingOnce()
+      setInterval(hideBrandingOnce, 1000);
+    }
+
+    function hideBrandingOnce() {
+      const playerIFrame = document.querySelector("iframe");
+      if (!playerIFrame) {
+        return;
+      }
+
+      const frameDoc = playerIFrame.contentDocument;
+      if (!frameDoc) {
+        return;
+      }
+
+      const branding = frameDoc.querySelectorAll('.iv-branding')[0];
+      if (branding) {
+        branding.style.display = 'none';
+      }
+    }
+
+    function hideCaption() {
+      hideCaptionOnce()
+      setInterval(hideCaptionOnce, 1000);
+    }
+
+    function hideCaptionOnce() {
+      if (!player) {
+        return;
+      }
+      player.unloadModule('captions');
+    }
+
   </script>
 </html>

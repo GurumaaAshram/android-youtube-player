@@ -3,6 +3,7 @@ package com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.util.AttributeSet
@@ -10,6 +11,7 @@ import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.annotation.VisibleForTesting
 import com.pierfrancescosoffritti.androidyoutubeplayer.R
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
@@ -91,6 +93,7 @@ internal class WebViewYouTubePlayer constructor(
   internal fun initialize(initListener: (YouTubePlayer) -> Unit, playerOptions: IFramePlayerOptions?) {
     youTubePlayerInitListener = initListener
     initWebView(playerOptions ?: IFramePlayerOptions.default)
+    this.webViewClient = MyWebViewClient()
   }
 
   // create new set to avoid concurrent modifications
@@ -146,6 +149,13 @@ internal class WebViewYouTubePlayer constructor(
     }
 
     super.onWindowVisibilityChanged(visibility)
+  }
+}
+
+private class MyWebViewClient : WebViewClient() {
+
+  override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+    return true
   }
 }
 

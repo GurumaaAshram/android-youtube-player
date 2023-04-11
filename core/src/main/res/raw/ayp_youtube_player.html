@@ -233,6 +233,69 @@
       }
     }
 
+    function hideSettingsMoreOptions() {
+      hideSettingsMoreOptionsOnce()
+      setInterval(hideSettingsMoreOptionsOnce, 1000);
+    }
+
+    function hideSettingsMoreOptionsOnce() {
+      const playerIFrame = document.querySelector("iframe");
+      if (!playerIFrame) {
+        return;
+      }
+
+      const frameDoc = playerIFrame.contentDocument;
+      if (!frameDoc) {
+        return;
+      }
+
+      const s_popup = frameDoc.querySelector(".ytp-settings-menu");
+      const moreOptionsItem = selectItem(s_popup, ".ytp-menuitem", "More options");
+
+      if (moreOptionsItem) {
+        moreOptionsItem.style.display = 'none';
+      }
+    }
+
+    function disableSettingsMoreOptions() {
+      disableSettingsMoreOptionsOnce()
+      setInterval(disableSettingsMoreOptionsOnce, 1000);
+    }
+
+    function disableSettingsMoreOptionsOnce() {
+      const playerIFrame = document.querySelector("iframe");
+      if (!playerIFrame) {
+        return;
+      }
+
+      const frameDoc = playerIFrame.contentDocument;
+      if (!frameDoc) {
+        return;
+      }
+
+      const s_popup = frameDoc.querySelector(".ytp-settings-menu");
+      const moreOptionsItem = selectItem(s_popup, ".ytp-menuitem", "More options");
+
+      if (moreOptionsItem) {
+        // Stop receiving any mouse or touch events, effectively making it unclickable.
+        moreOptionsItem.style.pointerEvents = 'none';
+        moreOptionsItem.style.touchAction = 'none';
+      }
+    }
+
+    // helper function:
+    // select by css selector,
+    // or by selector & text
+    function selectItem(node, selector, text) {
+      if (text) {
+        const result = Array.from(node.querySelectorAll(selector))
+                .find(item => item.innerText.includes(text));
+        return result;
+      } else {
+        return node.querySelector(selector);
+      }
+    }
+
     function hideCaption() {
       hideCaptionOnce()
       setInterval(hideCaptionOnce, 1000);

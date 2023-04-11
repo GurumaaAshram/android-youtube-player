@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
@@ -51,6 +52,8 @@ private class YouTubePlayerImpl(private val webView: WebView) : YouTubePlayer {
   override fun hideTabletPopup() = webView.invoke("hideTabletPopup")
   override fun hideBranding() = webView.invoke("hideBranding")
   override fun hideCaption() = webView.invoke("hideCaption")
+  override fun hideSettingsMoreOptions() = webView.invoke("hideSettingsMoreOptions")
+  override fun disableSettingsMoreOptions() = webView.invoke("disableSettingsMoreOptions")
 
   fun release() {
     listeners.clear()

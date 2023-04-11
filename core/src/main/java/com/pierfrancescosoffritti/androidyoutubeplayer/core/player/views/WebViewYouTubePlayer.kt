@@ -3,11 +3,9 @@ package com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
@@ -102,6 +100,7 @@ internal class WebViewYouTubePlayer constructor(
     youTubePlayerInitListener = initListener
     initWebView(playerOptions ?: IFramePlayerOptions.default)
     this.webViewClient = MyWebViewClient()
+    this.setOnLongClickListener { true }
   }
 
   // create new set to avoid concurrent modifications

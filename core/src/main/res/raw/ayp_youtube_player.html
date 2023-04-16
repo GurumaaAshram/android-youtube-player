@@ -456,5 +456,18 @@
       player.unloadModule('captions');
     }
 
+
+    function disableYoutubePlayerUselessViews() {
+      disableYoutubePlayerUselessViewsOnce()
+      setInterval(disableYoutubePlayerUselessViewsOnce, 1000)
+    }
+
+    function disableYoutubePlayerUselessViewsOnce() {
+      disableBrandingOnce()
+      disableSettingsMoreOptionsOnce()
+      disableMoreOptionsPopUpOnce()
+    }
+
+
   </script>
 </html>

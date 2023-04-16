@@ -57,6 +57,8 @@ private class YouTubePlayerImpl(private val webView: WebView) : YouTubePlayer {
   override fun disableSettingsMoreOptions() = webView.invoke("disableSettingsMoreOptions")
   override fun hideMoreOptionsPopUp() = webView.invoke("hideMoreOptionsPopUp")
   override fun disableMoreOptionsPopUp() = webView.invoke("disableMoreOptionsPopUp")
+  override fun disableYoutubePlayerUselessViews() =
+    webView.invoke("disableYoutubePlayerUselessViews")
 
   fun release() {
     listeners.clear()

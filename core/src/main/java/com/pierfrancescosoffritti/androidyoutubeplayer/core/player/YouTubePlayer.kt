@@ -60,4 +60,5 @@ interface YouTubePlayer {
   fun disableSettingsMoreOptions()
   fun hideMoreOptionsPopUp()
   fun disableMoreOptionsPopUp()
+  fun disableYoutubePlayerUselessViews()
 }

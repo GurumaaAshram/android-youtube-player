@@ -50,9 +50,13 @@ interface YouTubePlayer {
   fun removeListener(listener: YouTubePlayerListener): Boolean
 
   fun hideVideoTitle()
+  fun disableVideoTitle()
   fun hideTabletPopup()
+  fun disableTabletPopup()
   fun hideBranding()
+  fun disableBranding()
   fun hideCaption()
   fun hideSettingsMoreOptions()
+  fun hideMoreOptionsPopUp()
   fun disableSettingsMoreOptions()
 }

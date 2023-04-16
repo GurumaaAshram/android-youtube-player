@@ -47,11 +47,15 @@ private class YouTubePlayerImpl(private val webView: WebView) : YouTubePlayer {
   override fun removeListener(listener: YouTubePlayerListener) = listeners.remove(listener)
 
   override fun hideVideoTitle() = webView.invoke("hideVideoTitle")
+  override fun disableVideoTitle() = webView.invoke("disableVideoTitle")
   override fun hideTabletPopup() = webView.invoke("hideTabletPopup")
+  override fun disableTabletPopup() = webView.invoke("disableTabletPopup")
   override fun hideBranding() = webView.invoke("hideBranding")
+  override fun disableBranding() = webView.invoke("disableBranding")
   override fun hideCaption() = webView.invoke("hideCaption")
   override fun hideSettingsMoreOptions() = webView.invoke("hideSettingsMoreOptions")
   override fun disableSettingsMoreOptions() = webView.invoke("disableSettingsMoreOptions")
+  override fun hideMoreOptionsPopUp() = webView.invoke("hideMoreOptionsPopUp")
 
   fun release() {
     listeners.clear()
@@ -101,6 +105,11 @@ internal class WebViewYouTubePlayer constructor(
     initWebView(playerOptions ?: IFramePlayerOptions.default)
     this.webViewClient = MyWebViewClient()
     this.setOnLongClickListener { true }
+//    this.setOnKeyListener(this)
+//    this.isClickable = false;
+//    this.isLongClickable = false;
+//    this.setOnLongClickListener(null)
+//    this.setOnClickListener(null)
   }
 
   // create new set to avoid concurrent modifications
@@ -157,6 +166,32 @@ internal class WebViewYouTubePlayer constructor(
 
     super.onWindowVisibilityChanged(visibility)
   }
+
+//  override fun onLongClick(v: View?): Boolean {
+////    Log.i("onLongClick", "WebViewYouTubePlayer onLongClick called")
+//    return true
+//  }
+
+//
+//  override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+//    Log.i("onKeyDown", event!!.action.toString())
+//    return super.onKeyDown(keyCode, event)
+//  }
+//
+//  override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+//    Log.i("onKeyUp", event!!.action.toString())
+//    return super.onKeyUp(keyCode, event)
+//  }
+//
+//  override fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {
+//    Log.i("onKeyLongPress", event!!.action.toString())
+//    return super.onKeyLongPress(keyCode, event)
+//  }
+//  override fun onKey(v: View?, keyCode: Int, event: KeyEvent?): Boolean {
+//    Log.i("onKey", event!!.action.toString())
+//    return event.action == KeyEvent.ACTION_DOWN
+//  }
+//
 }
 
 private class MyWebViewClient : WebViewClient() {

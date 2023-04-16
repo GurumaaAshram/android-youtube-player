@@ -188,12 +188,58 @@
       }
     }
 
+    function disableVideoTitle() {
+      disableVideoTitleOnce()
+      setInterval(disableVideoTitleOnce, 1000);
+    }
+
+    function disableVideoTitleOnce() {
+      const playerIFrame = document.querySelector("iframe");
+      if (!playerIFrame) {
+        return;
+      }
+
+      const frameDoc = playerIFrame.contentDocument;
+      if (!frameDoc) {
+        return;
+      }
+
+      const title = frameDoc.querySelector('.ytp-chrome-top');
+      if (title) {
+        title.style.pointerEvents = 'none';
+        title.style.touchAction = 'none';
+      }
+    }
+
     function hideTabletPopup() {
       hideTabletPopupOnce()
       setInterval(hideTabletPopupOnce, 1000);
     }
 
     function hideTabletPopupOnce() {
+      const playerIFrame = document.querySelector("iframe");
+      if (!playerIFrame) {
+        return;
+      }
+
+      const frameDoc = playerIFrame.contentDocument;
+      if (!frameDoc) {
+        return;
+      }
+
+      const collection = frameDoc.getElementsByClassName("ytp-pause-overlay-container")[0];
+      if (!collection) {
+        return;
+      }
+      collection.style.display = 'none';
+    }
+
+    function disableTabletPopup() {
+      disableTabletPopupOnce()
+      setInterval(disableTabletPopupOnce, 1000);
+    }
+
+    function disableTabletPopupOnce() {
       const playerIFrame = document.querySelector("iframe");
       if (!playerIFrame) {
         return;
@@ -230,6 +276,29 @@
       const branding = frameDoc.querySelectorAll('.iv-branding')[0];
       if (branding) {
         branding.style.display = 'none';
+      }
+    }
+
+    function disableBranding() {
+      disableBrandingOnce()
+      setInterval(disableBrandingOnce, 1000);
+    }
+
+    function disableBrandingOnce() {
+      const playerIFrame = document.querySelector("iframe");
+      if (!playerIFrame) {
+        return;
+      }
+
+      const frameDoc = playerIFrame.contentDocument;
+      if (!frameDoc) {
+        return;
+      }
+
+      const branding = frameDoc.querySelectorAll('.iv-branding')[0];
+      if (branding) {
+        branding.style.pointerEvents = 'none';
+        branding.style.touchAction = 'none';
       }
     }
 
@@ -280,6 +349,47 @@
         // Stop receiving any mouse or touch events, effectively making it unclickable.
         moreOptionsItem.style.pointerEvents = 'none';
         moreOptionsItem.style.touchAction = 'none';
+      }
+    }
+
+
+    function hideMoreOptionsPopUp() {
+      hideMoreOptionsPopUpOnce()
+      setInterval(hideMoreOptionsPopUpOnce, 1000);
+    }
+
+    function hideMoreOptionsPopUpOnce() {
+      const playerIFrame = document.querySelector("iframe");
+      if (!playerIFrame) {
+        return;
+      }
+
+      const frameDoc = playerIFrame.contentDocument;
+      if (!frameDoc) {
+        return;
+      }
+
+      const s_popup = frameDoc.querySelector(".ytp-contextmenu");
+      if (!s_popup) {
+        return;
+      }
+      s_popup.style.visibility = 'hidden';
+      s_popup.style.display = 'none';
+
+      const allOptions = s_popup.querySelectorAll(".ytp-menuitem");
+      if (!allOptions) {
+        return;
+      }
+      allOptions.every(hideMenuItem);
+    }
+
+    function hideMenuItem(menuItem) {
+      if (menuItem) {
+        // Stop receiving any mouse or touch events, effectively making it unclickable.
+        menuItem.style.pointerEvents = 'none';
+        menuItem.style.touchAction = 'none';
+        menuItem.style.display = 'none';
+        menuItem.style.visibility = 'hidden';
       }
     }
 

@@ -393,6 +393,44 @@
       }
     }
 
+    function disableMoreOptionsPopUp() {
+      disableMoreOptionsPopUpOnce()
+      setInterval(disableMoreOptionsPopUpOnce, 1000);
+    }
+
+    function disableMoreOptionsPopUpOnce() {
+      const playerIFrame = document.querySelector("iframe");
+      if (!playerIFrame) {
+        return;
+      }
+
+      const frameDoc = playerIFrame.contentDocument;
+      if (!frameDoc) {
+        return;
+      }
+
+      const s_popup = frameDoc.querySelector(".ytp-contextmenu");
+      if (!s_popup) {
+        return;
+      }
+      s_popup.style.pointerEvents = 'none';
+      s_popup.style.touchAction = 'none';
+
+      // const allOptions = s_popup.querySelectorAll(".ytp-menuitem");
+      // if (!allOptions) {
+      //   return;
+      // }
+      // allOptions.every(hideMenuItem);
+    }
+
+    function hideMenuItem(menuItem) {
+      if (menuItem) {
+        // Stop receiving any mouse or touch events, effectively making it unclickable.
+        menuItem.style.pointerEvents = 'none';
+        menuItem.style.touchAction = 'none';
+      }
+    }
+
     // helper function:
     // select by css selector,
     // or by selector & text

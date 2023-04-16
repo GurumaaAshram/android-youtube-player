@@ -57,6 +57,7 @@ interface YouTubePlayer {
   fun disableBranding()
   fun hideCaption()
   fun hideSettingsMoreOptions()
-  fun hideMoreOptionsPopUp()
   fun disableSettingsMoreOptions()
+  fun hideMoreOptionsPopUp()
+  fun disableMoreOptionsPopUp()
 }

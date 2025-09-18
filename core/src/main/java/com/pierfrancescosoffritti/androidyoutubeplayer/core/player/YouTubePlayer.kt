@@ -23,8 +23,24 @@ interface YouTubePlayer {
   fun play()
   fun pause()
 
+  /** If the player is playing a playlist, play the next video. */
+  fun nextVideo()
+  /** If the player is playing a playlist, play the previous video. */
+  fun previousVideo()
+  /** If the player is playing a playlist, play the video at position [index]. */
+  fun playVideoAt(index: Int)
+
+  /** If the player is playing a playlist, enable or disable looping of the playlist. */
+  fun setLoop(loop: Boolean)
+
+  /** If the player is playing a playlist, enable or disable shuffling of the playlist. */
+  fun setShuffle(shuffle: Boolean)
+
   fun mute()
   fun unMute()
+
+  /** Returns true if the player is muted, false otherwise. */
+  fun isMutedAsync(callback: BooleanProvider)
 
   /**
    * @param volumePercent Integer between 0 and 100

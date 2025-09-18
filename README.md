@@ -1,6 +1,13 @@
+#### \<Advertisement\>
+
+#### [:mega: Reply to Google Play Reviews using AI :arrow_right:](https://playstorereply.com) 
+Increase your apps ratings. Engage with all users, no more unanswered reviews.
+Save time and increase customer satisfaction.
+
+#### \</Advertisement\>
+
 # android-youtube-player
 
-[![Build Status](https://travis-ci.com/PierfrancescoSoffritti/android-youtube-player.svg?branch=master)](https://travis-ci.com/PierfrancescoSoffritti/android-youtube-player) 
 [![Android YouTube Player](https://www.appbrain.com/stats/libraries/shield/android_youtube_player.svg)](https://www.appbrain.com/stats/libraries/details/android_youtube_player/android-youtube-player) 
 [![android arsenal](https://img.shields.io/badge/Android%20Arsenal-android--youtube--player-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/4322) 
 [![website](https://img.shields.io/badge/-website-brightgreen.svg)](https://pierfrancescosoffritti.github.io/android-youtube-player/)
@@ -26,7 +33,7 @@ A lengthier explanation of why this library was created can be found in [this Me
 ## Who is using this library
 Now that **the official API from Google is deprecated**, `android-youtube-player` is the main YouTube player library for Android.
 
-**Used by over 5 thousands apps**, with some big names like [Flipkart](https://play.google.com/store/apps/details?id=com.flipkart.android), [McDonald's](https://play.google.com/store/apps/details?id=com.mcdo.mcdonalds), [InShot Video Editor](https://play.google.com/store/apps/details?id=com.camerasideas.instashot), [Genius](https://play.google.com/store/apps/details?id=com.genius.android) and [reddit is fun](https://play.google.com/store/apps/details?id=com.andrewshu.android.reddit).
+**Used by over 5 thousands apps**, with some big names like [Tumblr](https://play.google.com/store/apps/details?id=com.tumblr), [Flipkart](https://play.google.com/store/apps/details?id=com.flipkart.android), [McDonald's](https://play.google.com/store/apps/details?id=com.mcdo.mcdonalds), [InShot Video Editor](https://play.google.com/store/apps/details?id=com.camerasideas.instashot), [Genius](https://play.google.com/store/apps/details?id=com.genius.android) and [reddit is fun](https://play.google.com/store/apps/details?id=com.andrewshu.android.reddit).
 
 You can [see more stats here](https://www.appbrain.com/stats/libraries/details/android_youtube_player/android-youtube-player).
 
@@ -38,7 +45,7 @@ You can [see more stats here](https://www.appbrain.com/stats/libraries/details/a
 **TL;DR** No. 
 
 The library uses YouTube's own web player to play videos. Therefore it is 100% compliant with  terms of service.
-Playing YouTube videos in a WebView is the recomended approach by Google, both on [Android](https://developers.google.com/youtube/android/player/) and [iOS](https://developers.google.com/youtube/v3/guides/ios_youtube_helper).
+Playing YouTube videos in a WebView is the recommended approach by Google, both on [Android](https://developers.google.com/youtube/android/player/) and [iOS](https://developers.google.com/youtube/v3/guides/ios_youtube_helper).
 
 That said how you use the library matters, be sure to play videos only when the player is visible. If you follow the instructions in the documentation, the library will automatically handle this for you.
 
@@ -63,7 +70,8 @@ Also remember when publishing your app on the PlayStore to write title and descr
         2. [Load videos](#load-videos)
             1. [Utility for loading videos](#utility-for-loading-videos)
         3. [Events](#events)
-        4. [YouTubePlayerTracker](#youtubeplayertracker)
+        4. [Get state from the player](#get-state-from-the-player)
+        5. [YouTubePlayerTracker](#youtubeplayertracker)
     3. [YouTubePlayerListener](#youtubeplayerlistener)
         1. [onReady callback](#onready-callback)
         2. [onStateChanged callback](#onstatechanged-callback)
@@ -123,7 +131,7 @@ Add this to your module level `build.gradle` file.
 
 ```gradle
 dependencies {
-  implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:12.0.0'
+  implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.2'
 }
 ```
 
@@ -134,7 +142,7 @@ Add this to your module level `build.gradle` file.
 
 ```gradle
 dependencies {
-  implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:chromecast-sender:0.28'
+  implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:chromecast-sender:0.31'
 }
 ```
 
@@ -184,7 +192,7 @@ youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
 });
 ```
 
-If you decde to initialize the player programmatically, remember to remove the `autoPlay` and `videoId` attributes from the `YouTubePlayerView` in your XML file.
+If you decide to initialize the player programmatically, remember to remove the `autoPlay` and `videoId` attributes from the `YouTubePlayerView` in your XML file.
 
 ----
 
@@ -289,6 +297,9 @@ YouTubePlayerView.initialize(YouTubePlayerListener listener, boolean handleNetwo
 ```java
 YouTubePlayerView.initialize(YouTubePlayerListener listener, boolean handleNetworkEvents, IFramePlayerOptions iframePlayerOptions)
 ```
+```java
+YouTubePlayerView.initialize(YouTubePlayerListener listener, boolean handleNetworkEvents, IFramePlayerOptions iframePlayerOptions, String videoId)
+```
 #### `initialize(YouTubePlayerListener)`
 Initialize the `YouTubePlayer`. Network events are automatically handled by the player.
 
@@ -301,6 +312,9 @@ Initialize the `YouTubePlayer`. By using the `boolean` is possible to decide if 
 By passing an `IFramePlayerOptions` to the initialize method it is possible to set some of the parameters of the IFrame YouTubePlayer. Read more about `IFramePlayerOptions` [here](#iframeplayeroptions).
 
 All the possible parameters and values are listed [here](https://developers.google.com/youtube/player_parameters#Parameters). Not all of them are supported in this library because some don't make sense in this context. [Open an issue](https://github.com/PierfrancescoSoffritti/android-youtube-player/issues) if you need a parameter that is not currently supported.
+
+#### `initialize(YouTubePlayerListener, boolean, IFramePlayerOptions, String)`
+By passing the `videoId` the video will be loaded as soon as possible after initialization.
 
 ### IFramePlayerOptions
 The `IFramePlayerOptions` is an optional argument that can be passed to `YouTubePlayerView.initialize(YouTubePlayerListener, boolean, IFramePlayerOptions)`, it can be used to set some of the parameters of the IFrame YouTubePlayer.
@@ -347,6 +361,14 @@ If set to 0: the player will show captions.
 
 If set to 1: the player won't show captions.
 
+##### `start`
+This parameter causes the player to begin playing the video at the given number of seconds from the start of the video. The parameter value is a positive integer.
+
+It works similarly to the `seekTo` method, and the `startSeconds` argument of `loadVideo` and `cueVideo`.
+
+##### `end`
+This parameter specifies the time, measured in seconds from the beginning of the video, when the player should stop playing the video. The parameter value is a positive integer.
+
 ### Full screen
 The full screen button can be added to the player by using `IFramePlayerOptions`
 
@@ -387,6 +409,17 @@ If you need to change the orientation of your Activity/Fragment, remember that b
   <activity
     android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout" />
 </application>
+```
+
+### Playlist
+You can initialize the player to play playlists instead of videos. This can be done by setting `listType` to `playlist` and then providing the id of the playlist to `list`.
+
+```kotlin
+val iFramePlayerOptions = IFramePlayerOptions.Builder()
+  .controls(1)
+  .listType("playlist")
+  .list(PLAYLIST_ID)
+  .build()
 ```
 
 ### Release the YouTubePlayerView
@@ -475,6 +508,18 @@ This function will call `loadVideo` only if the Activity is resumed, otherwise i
 
 ### Events
 During its existence the player will constantly emit events, you can easily listen to all of them by adding a [`YouTubePlayerListener`](#youtubeplayerlistener) to it.
+
+### Get state from the player
+The IFrame API exposes methods like `isMute` that can be used to read the current state of the player.
+
+These are exposed in the `YouTubePlayer` interface as async calls. They are async becasue in order to get them, the JVM player needs to send a requesto to the IFrame player inside the Webview.
+
+These methods are exposed with the `async` suffix in the `YouTubePlayer`. Suspending extension functions are available to simplify usage from Kotlin.
+
+```kotlin
+fun isMutedAsync(callback: BooleanProvider)
+suspend fun isMuted(): Boolean
+```
 
 ### YouTubePlayerTracker
 `YouTubePlayerTracker` is an utility provided by the library to easily keep track of a `YouTubePlayer`'s state and other information.
@@ -618,7 +663,7 @@ Starting from version 12.0.0 of the library, this UI is available as a separate 
 
 ```gradle
 dependencies {
-  implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:{latestversion}'
+  implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:{latest-version}'
   implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:custom-ui:{latest-version}'
 }
 ```
@@ -696,7 +741,7 @@ This component is useful to display and control the time of the playback. It sho
 You can add it to your layout programmatically or in your xml.
 
 ```xml
-<com.pierfrancescosoffritti.androidyoutubeplayer.core.ui.views.YouTubePlayerSeekBar
+<com.pierfrancescosoffritti.androidyoutubeplayer.core.customui.views.YouTubePlayerSeekBar
   android:id="@+id/youtube_player_seekbar"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"

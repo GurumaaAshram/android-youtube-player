@@ -38,7 +38,6 @@ function YouTubePlayer(communicationConstants, communicationChannel) {
                 fs: 0,
                 origin: 'https://www.youtube.com',
                 rel: 0,
-                showinfo: 0,
                 iv_load_policy: 3
             }            
         })
@@ -137,11 +136,46 @@ function YouTubePlayer(communicationConstants, communicationChannel) {
       player.setPlaybackRate(playbackRate)
     }
 
+    function nextVideo() {
+      player.nextVideo()
+    }
+
+    function previousVideo() {
+      player.previousVideo()
+    }
+
+    function playVideoAt(index) {
+      player.playVideoAt(index)
+    }
+
     function getActions() {
         return actions
     }
 
-    const actions = { seekTo, pauseVideo, playVideo, loadVideo, cueVideo, mute, unMute, setVolume, setPlaybackRate }
+    function setLoop(loop) {
+        player.setLoop(loop)
+    }
+
+    function setShuffle(shuffle) {
+        player.setShuffle(shuffle);
+      }
+
+    const actions = { 
+        seekTo, 
+        pauseVideo,
+        playVideo,
+        loadVideo, 
+        cueVideo, 
+        mute, 
+        unMute,
+        setVolume,
+        setPlaybackRate,
+        nextVideo,
+        previousVideo,
+        playVideoAt,
+        setLoop,
+        setShuffle
+    }
     
     return {
         initialize,

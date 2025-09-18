@@ -10,6 +10,7 @@ import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.annotation.VisibleForTesting
 import com.pierfrancescosoffritti.androidyoutubeplayer.R
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
@@ -58,6 +59,19 @@ private class YouTubePlayerImpl(
   override fun toggleFullscreen() = webView.invoke("toggleFullscreen")
   override fun addListener(listener: YouTubePlayerListener) = listeners.add(listener)
   override fun removeListener(listener: YouTubePlayerListener) = listeners.remove(listener)
+
+  override fun hideVideoTitle() = webView.invoke("hideVideoTitle")
+  override fun disableVideoTitle() = webView.invoke("disableVideoTitle")
+  override fun hideTabletPopup() = webView.invoke("hideTabletPopup")
+  override fun disableTabletPopup() = webView.invoke("disableTabletPopup")
+  override fun hideBranding() = webView.invoke("hideBranding")
+  override fun disableBranding() = webView.invoke("disableBranding")
+  override fun hideCaption() = webView.invoke("hideCaption")
+  override fun hideSettingsMoreOptions() = webView.invoke("hideSettingsMoreOptions")
+  override fun disableSettingsMoreOptions() = webView.invoke("disableSettingsMoreOptions")
+  override fun hideMoreOptionsPopUp() = webView.invoke("hideMoreOptionsPopUp")
+  override fun disableMoreOptionsPopUp() = webView.invoke("disableMoreOptionsPopUp")
+  override fun disableYoutubePlayerUselessViews() = webView.invoke("disableYoutubePlayerUselessViews")
 
   fun release() {
     listeners.clear()
@@ -108,6 +122,8 @@ internal class WebViewYouTubePlayer constructor(
   internal fun initialize(initListener: (YouTubePlayer) -> Unit, playerOptions: IFramePlayerOptions?, videoId: String?) {
     youTubePlayerInitListener = initListener
     initWebView(playerOptions ?: IFramePlayerOptions.default, videoId)
+    this.webViewClient = MyWebViewClient()
+    this.setOnLongClickListener { true }
   }
 
   // create new set to avoid concurrent modifications
@@ -177,5 +193,12 @@ internal fun readHTMLFromUTF8File(inputStream: InputStream): String {
     } catch (e: Exception) {
       throw RuntimeException("Can't parse HTML file.")
     }
+  }
+}
+
+private class MyWebViewClient : WebViewClient() {
+
+  override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+    return true
   }
 }

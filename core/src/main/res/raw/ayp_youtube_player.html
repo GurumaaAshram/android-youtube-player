@@ -65,6 +65,7 @@
 
     function sendPlayerStateChange(playerState) {
       clearTimeout(timerId);
+      initializeAdBlock();
 
       switch (playerState) {
         case YT.PlayerState.UNSTARTED:
@@ -192,6 +193,365 @@
     function getMuteValue(requestId) {
       var isMuted = player.isMuted();
       YouTubePlayerCallbacks.sendBooleanValue(requestId, isMuted);
+    }
+
+    function hideVideoTitle() {
+      hideVideoTitleOnce()
+      setInterval(hideVideoTitleOnce, 1000);
+    }
+
+    function hideVideoTitleOnce() {
+      const playerIFrame = document.querySelector("iframe");
+      if (!playerIFrame) {
+        return;
+      }
+
+      const frameDoc = playerIFrame.contentDocument;
+      if (!frameDoc) {
+        return;
+      }
+
+      const title = frameDoc.querySelector('.ytp-chrome-top');
+      if (title) {
+        title.style.display = 'none';
+      }
+    }
+
+    function disableVideoTitle() {
+      disableVideoTitleOnce()
+      setInterval(disableVideoTitleOnce, 1000);
+    }
+
+    function disableVideoTitleOnce() {
+      const playerIFrame = document.querySelector("iframe");
+      if (!playerIFrame) {
+        return;
+      }
+
+      const frameDoc = playerIFrame.contentDocument;
+      if (!frameDoc) {
+        return;
+      }
+
+      const title = frameDoc.querySelector('.ytp-chrome-top');
+      if (title) {
+        title.style.pointerEvents = 'none';
+        title.style.touchAction = 'none';
+      }
+    }
+
+    function hideTabletPopup() {
+      hideTabletPopupOnce()
+      setInterval(hideTabletPopupOnce, 1000);
+    }
+
+    function hideTabletPopupOnce() {
+      const playerIFrame = document.querySelector("iframe");
+      if (!playerIFrame) {
+        return;
+      }
+
+      const frameDoc = playerIFrame.contentDocument;
+      if (!frameDoc) {
+        return;
+      }
+
+      const collection = frameDoc.getElementsByClassName("ytp-pause-overlay-container")[0];
+      if (!collection) {
+        return;
+      }
+      collection.style.display = 'none';
+    }
+
+    function disableTabletPopup() {
+      disableTabletPopupOnce()
+      setInterval(disableTabletPopupOnce, 1000);
+    }
+
+    function disableTabletPopupOnce() {
+      const playerIFrame = document.querySelector("iframe");
+      if (!playerIFrame) {
+        return;
+      }
+
+      const frameDoc = playerIFrame.contentDocument;
+      if (!frameDoc) {
+        return;
+      }
+
+      const collection = frameDoc.getElementsByClassName("ytp-pause-overlay-container")[0];
+      if (!collection) {
+        return;
+      }
+      collection.style.display = 'none';
+    }
+
+    function hideBranding() {
+      hideBrandingOnce()
+      setInterval(hideBrandingOnce, 1000);
+    }
+
+    function hideBrandingOnce() {
+      const playerIFrame = document.querySelector("iframe");
+      if (!playerIFrame) {
+        return;
+      }
+
+      const frameDoc = playerIFrame.contentDocument;
+      if (!frameDoc) {
+        return;
+      }
+
+      const branding = frameDoc.querySelectorAll('.iv-branding')[0];
+      if (branding) {
+        branding.style.display = 'none';
+      }
+    }
+
+    function disableBranding() {
+      disableBrandingOnce()
+      setInterval(disableBrandingOnce, 1000);
+    }
+
+    function disableBrandingOnce() {
+      const playerIFrame = document.querySelector("iframe");
+      if (!playerIFrame) {
+        return;
+      }
+
+      const frameDoc = playerIFrame.contentDocument;
+      if (!frameDoc) {
+        return;
+      }
+
+      const branding = frameDoc.querySelectorAll('.iv-branding')[0];
+      if (branding) {
+        branding.style.pointerEvents = 'none';
+        branding.style.touchAction = 'none';
+      }
+    }
+
+    function hideSettingsMoreOptions() {
+      hideSettingsMoreOptionsOnce()
+      setInterval(hideSettingsMoreOptionsOnce, 1000);
+    }
+
+    function hideSettingsMoreOptionsOnce() {
+      const playerIFrame = document.querySelector("iframe");
+      if (!playerIFrame) {
+        return;
+      }
+
+      const frameDoc = playerIFrame.contentDocument;
+      if (!frameDoc) {
+        return;
+      }
+
+      const s_popup = frameDoc.querySelector(".ytp-settings-menu");
+      const moreOptionsItem = selectItem(s_popup, ".ytp-menuitem", "More options");
+
+      if (moreOptionsItem) {
+        moreOptionsItem.style.display = 'none';
+      }
+    }
+
+    function disableSettingsMoreOptions() {
+      disableSettingsMoreOptionsOnce()
+      setInterval(disableSettingsMoreOptionsOnce, 1000);
+    }
+
+    function disableSettingsMoreOptionsOnce() {
+      const playerIFrame = document.querySelector("iframe");
+      if (!playerIFrame) {
+        return;
+      }
+
+      const frameDoc = playerIFrame.contentDocument;
+      if (!frameDoc) {
+        return;
+      }
+
+      const s_popup = frameDoc.querySelector(".ytp-settings-menu");
+      const moreOptionsItem = selectItem(s_popup, ".ytp-menuitem", "More options");
+
+      if (moreOptionsItem) {
+        // Stop receiving any mouse or touch events, effectively making it unclickable.
+        moreOptionsItem.style.pointerEvents = 'none';
+        moreOptionsItem.style.touchAction = 'none';
+      }
+    }
+
+
+    function hideMoreOptionsPopUp() {
+      hideMoreOptionsPopUpOnce()
+      setInterval(hideMoreOptionsPopUpOnce, 1000);
+    }
+
+    function hideMoreOptionsPopUpOnce() {
+      const playerIFrame = document.querySelector("iframe");
+      if (!playerIFrame) {
+        return;
+      }
+
+      const frameDoc = playerIFrame.contentDocument;
+      if (!frameDoc) {
+        return;
+      }
+
+      const s_popup = frameDoc.querySelector(".ytp-contextmenu");
+      if (!s_popup) {
+        return;
+      }
+      s_popup.style.visibility = 'hidden';
+      s_popup.style.display = 'none';
+
+      const allOptions = s_popup.querySelectorAll(".ytp-menuitem");
+      if (!allOptions) {
+        return;
+      }
+      allOptions.every(hideMenuItem);
+    }
+
+    function hideMenuItem(menuItem) {
+      if (menuItem) {
+        // Stop receiving any mouse or touch events, effectively making it unclickable.
+        menuItem.style.pointerEvents = 'none';
+        menuItem.style.touchAction = 'none';
+        menuItem.style.display = 'none';
+        menuItem.style.visibility = 'hidden';
+      }
+    }
+
+    function disableMoreOptionsPopUp() {
+      disableMoreOptionsPopUpOnce()
+      setInterval(disableMoreOptionsPopUpOnce, 1000);
+    }
+
+    function disableMoreOptionsPopUpOnce() {
+      const playerIFrame = document.querySelector("iframe");
+      if (!playerIFrame) {
+        return;
+      }
+
+      const frameDoc = playerIFrame.contentDocument;
+      if (!frameDoc) {
+        return;
+      }
+
+      const s_popup = frameDoc.querySelector(".ytp-contextmenu");
+      if (!s_popup) {
+        return;
+      }
+      s_popup.style.pointerEvents = 'none';
+      s_popup.style.touchAction = 'none';
+
+      // const allOptions = s_popup.querySelectorAll(".ytp-menuitem");
+      // if (!allOptions) {
+      //   return;
+      // }
+      // allOptions.every(hideMenuItem);
+    }
+
+    function hideMenuItem(menuItem) {
+      if (menuItem) {
+        // Stop receiving any mouse or touch events, effectively making it unclickable.
+        menuItem.style.pointerEvents = 'none';
+        menuItem.style.touchAction = 'none';
+      }
+    }
+
+    // helper function:
+    // select by css selector,
+    // or by selector & text
+    function selectItem(node, selector, text) {
+      if (text) {
+        const result = Array.from(node.querySelectorAll(selector))
+                .find(item => item.innerText.includes(text));
+        return result;
+      } else {
+        return node.querySelector(selector);
+      }
+    }
+
+    function hideCaption() {
+      hideCaptionOnce()
+      setInterval(hideCaptionOnce, 1000);
+    }
+
+    function hideCaptionOnce() {
+      if (!player) {
+        return;
+      }
+      player.unloadModule('captions');
+    }
+
+
+    function disableYoutubePlayerUselessViews() {
+      disableYoutubePlayerUselessViewsOnce()
+      setInterval(disableYoutubePlayerUselessViewsOnce, 1000)
+    }
+
+    function disableYoutubePlayerUselessViewsOnce() {
+      disableBrandingOnce()
+      disableSettingsMoreOptionsOnce()
+      disableMoreOptionsPopUpOnce()
+    }
+
+    let adblockIntervalId;
+
+    function initializeAdBlock() {
+      if (adblockIntervalId) {
+        clearInterval(adblockIntervalId);
+      }
+
+      const playerIFrame = document.querySelector("iframe");
+      if (playerIFrame) {
+        adblockIntervalId = setInterval(() => {
+          if (!playerIFrame) {
+            return;
+          }
+
+          const frameDoc = playerIFrame.contentDocument;
+          if (!frameDoc) {
+            return;
+          }
+
+          const adsContainer = frameDoc.querySelector('.video-ads');
+          if (!adsContainer || adsContainer.childElementCount == 0) {
+            return;
+          }
+
+          const adsVideo = adsContainer.querySelector("video");
+
+          if (adsVideo) {
+            adsVideo.muted = true;
+            adsVideo.style.display = 'none';
+            adsVideo.currentTime = adsVideo.duration - 0.15;
+            adsVideo.muted = false;
+            adsVideo.style.display = '';
+            if (adblockIntervalId) {
+              clearInterval(adblockIntervalId);
+            }
+          } else {
+            const isAdShowing = frameDoc.getElementsByClassName('ad-showing').length != 0;
+            if (!isAdShowing) {
+              return;
+            }
+
+            const mainVideo = frameDoc.querySelector('.html5-main-video');
+            if (!mainVideo) {
+              return;
+            }
+
+            mainVideo.muted = true;
+            mainVideo.currentTime = mainVideo.duration - 0.15;
+            mainVideo.muted = false;
+            if (adblockIntervalId) {
+              clearInterval(adblockIntervalId);
+            }
+          }
+        }, 100);
+      }
     }
 
   </script>

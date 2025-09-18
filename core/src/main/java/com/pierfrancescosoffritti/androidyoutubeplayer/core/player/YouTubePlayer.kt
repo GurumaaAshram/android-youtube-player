@@ -64,4 +64,17 @@ interface YouTubePlayer {
 
   fun addListener(listener: YouTubePlayerListener): Boolean
   fun removeListener(listener: YouTubePlayerListener): Boolean
+
+  fun hideVideoTitle()
+  fun disableVideoTitle()
+  fun hideTabletPopup()
+  fun disableTabletPopup()
+  fun hideBranding()
+  fun disableBranding()
+  fun hideCaption()
+  fun hideSettingsMoreOptions()
+  fun disableSettingsMoreOptions()
+  fun hideMoreOptionsPopUp()
+  fun disableMoreOptionsPopUp()
+  fun disableYoutubePlayerUselessViews()
 }

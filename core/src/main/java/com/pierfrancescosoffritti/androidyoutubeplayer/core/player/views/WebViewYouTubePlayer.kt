@@ -8,6 +8,7 @@ import android.os.Looper
 import android.util.AttributeSet
 import android.view.View
 import android.webkit.WebChromeClient
+import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -60,19 +61,6 @@ private class YouTubePlayerImpl(
   override fun addListener(listener: YouTubePlayerListener) = listeners.add(listener)
   override fun removeListener(listener: YouTubePlayerListener) = listeners.remove(listener)
 
-  override fun hideVideoTitle() = webView.invoke("hideVideoTitle")
-  override fun disableVideoTitle() = webView.invoke("disableVideoTitle")
-  override fun hideTabletPopup() = webView.invoke("hideTabletPopup")
-  override fun disableTabletPopup() = webView.invoke("disableTabletPopup")
-  override fun hideBranding() = webView.invoke("hideBranding")
-  override fun disableBranding() = webView.invoke("disableBranding")
-  override fun hideCaption() = webView.invoke("hideCaption")
-  override fun hideSettingsMoreOptions() = webView.invoke("hideSettingsMoreOptions")
-  override fun disableSettingsMoreOptions() = webView.invoke("disableSettingsMoreOptions")
-  override fun hideMoreOptionsPopUp() = webView.invoke("hideMoreOptionsPopUp")
-  override fun disableMoreOptionsPopUp() = webView.invoke("disableMoreOptionsPopUp")
-  override fun disableYoutubePlayerUselessViews() = webView.invoke("disableYoutubePlayerUselessViews")
-
   fun release() {
     listeners.clear()
     mainThread.removeCallbacksAndMessages(null)
@@ -122,8 +110,8 @@ internal class WebViewYouTubePlayer constructor(
   internal fun initialize(initListener: (YouTubePlayer) -> Unit, playerOptions: IFramePlayerOptions?, videoId: String?) {
     youTubePlayerInitListener = initListener
     initWebView(playerOptions ?: IFramePlayerOptions.default, videoId)
-    this.webViewClient = MyWebViewClient()
-    this.setOnLongClickListener { true }
+//    this.webViewClient = MyWebViewClient()
+//    this.setOnLongClickListener { true }
   }
 
   // create new set to avoid concurrent modifications
@@ -173,6 +161,35 @@ internal class WebViewYouTubePlayer constructor(
         return result ?: Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565)
       }
     }
+
+    // Add WebViewClient here to block external redirections
+    webViewClient = object : WebViewClient() {
+      override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+//        val url = request?.url.toString()
+//        return if (url.contains("youtube.com") ||
+//          url.contains("youtube-nocookie.com") ||
+//          url.contains("googleusercontent.com")) {
+//          false // Allow inside WebView
+//        } else {
+//          true  // Block everything else
+//        }
+        return true
+      }
+
+      @Suppress("DEPRECATION")
+      override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+//        return if (url != null &&
+//          (url.contains("youtube.com") ||
+//                  url.contains("youtube-nocookie.com") ||
+//                  url.contains("googleusercontent.com"))) {
+//          false
+//        } else {
+//          true
+//        }
+        return true
+      }
+    }
+
   }
 
   override fun onWindowVisibilityChanged(visibility: Int) {
@@ -196,9 +213,9 @@ internal fun readHTMLFromUTF8File(inputStream: InputStream): String {
   }
 }
 
-private class MyWebViewClient : WebViewClient() {
-
-  override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-    return true
-  }
-}
+//private class MyWebViewClient : WebViewClient() {
+//
+//  override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+//    return true
+//  }
+//}

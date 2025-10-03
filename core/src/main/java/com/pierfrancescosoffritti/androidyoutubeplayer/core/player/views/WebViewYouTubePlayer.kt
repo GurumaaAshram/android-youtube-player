@@ -8,8 +8,10 @@ import android.os.Looper
 import android.util.AttributeSet
 import android.view.View
 import android.webkit.WebChromeClient
+import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.annotation.GuardedBy
 import androidx.annotation.VisibleForTesting
 import com.pierfrancescosoffritti.androidyoutubeplayer.R
@@ -160,6 +162,35 @@ internal class WebViewYouTubePlayer constructor(
         return result ?: Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565)
       }
     }
+
+    // Add WebViewClient here to block external redirections
+    webViewClient = object : WebViewClient() {
+      override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+//        val url = request?.url.toString()
+//        return if (url.contains("youtube.com") ||
+//          url.contains("youtube-nocookie.com") ||
+//          url.contains("googleusercontent.com")) {
+//          false // Allow inside WebView
+//        } else {
+//          true  // Block everything else
+//        }
+        return true
+      }
+
+      @Suppress("DEPRECATION")
+      override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+//        return if (url != null &&
+//          (url.contains("youtube.com") ||
+//                  url.contains("youtube-nocookie.com") ||
+//                  url.contains("googleusercontent.com"))) {
+//          false
+//        } else {
+//          true
+//        }
+        return true
+      }
+    }
+
   }
 
   override fun onWindowVisibilityChanged(visibility: Int) {

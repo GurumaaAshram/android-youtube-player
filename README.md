@@ -1337,3 +1337,63 @@ override fun playNextVideo() {
 ---
 
 For any question feel free to [open an issue on the GitHub repository](https://github.com/PierfrancescoSoffritti/android-youtube-player/issues).
+
+
+---
+
+## Local AAR Build Steps for Core
+cd core
+./../gradlew signAarPublication
+
+or
+
+cd core
+./../gradlew :core:assembleRelease
+
+---
+
+## Steps to update forked branch
+
+1. Add the upstream remote (if not already added)
+
+Open your local clone of your fork and add the original repo as upstream:
+
+git remote add upstream https://github.com/PierfrancescoSoffritti/android-youtube-player.git
+
+
+2. Check remotes:
+
+git remote -v
+
+
+You should see:
+
+origin    https://github.com/GurumaaAshram/android-youtube-player.git (fetch)
+origin    https://github.com/GurumaaAshram/android-youtube-player.git (push)
+upstream  https://github.com/PierfrancescoSoffritti/android-youtube-player.git (fetch)
+upstream  https://github.com/PierfrancescoSoffritti/android-youtube-player.git (push)
+
+3. Fetch the upstream tags
+git fetch upstream --tags
+
+4. Checkout the upstream tag 13.0.0
+git checkout tags/13.0.0 -b upstream-13.0.0
+
+This creates a local branch upstream-13.0.0 from the tag.
+
+5. Merge or Rebase into your fork’s branch
+
+If you want your fork’s main (or master) branch to be updated to tag 13.0.0, do:
+
+git checkout master
+git merge upstream-13.0.0
+
+6. Push changes to your fork
+
+Finally, update your fork on GitHub:
+
+7. git push origin master
+
+(if you merged).
+
+---

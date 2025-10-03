@@ -12,12 +12,13 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.annotation.GuardedBy
 import androidx.annotation.VisibleForTesting
 import com.pierfrancescosoffritti.androidyoutubeplayer.R
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.BooleanProvider
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayerBridge
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.BooleanProvider
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayerCallbacks
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.FullscreenListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerListener
@@ -26,7 +27,6 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.toFloat
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
-import java.util.*
 
 
 private class YouTubePlayerImpl(
@@ -34,7 +34,10 @@ private class YouTubePlayerImpl(
   private val callbacks: YouTubePlayerCallbacks
 ) : YouTubePlayer {
   private val mainThread: Handler = Handler(Looper.getMainLooper())
-  val listeners = mutableSetOf<YouTubePlayerListener>()
+
+  private val lock = Any()
+  @GuardedBy("lock")
+  private val listeners = mutableSetOf<YouTubePlayerListener>()
 
   override fun loadVideo(videoId: String, startSeconds: Float) = webView.invoke("loadVideo", videoId, startSeconds)
   override fun cueVideo(videoId: String, startSeconds: Float) = webView.invoke("cueVideo", videoId, startSeconds)
@@ -57,12 +60,13 @@ private class YouTubePlayerImpl(
   }
   override fun seekTo(time: Float) = webView.invoke("seekTo", time)
   override fun setPlaybackRate(playbackRate: PlayerConstants.PlaybackRate) = webView.invoke("setPlaybackRate", playbackRate.toFloat())
-  override fun toggleFullscreen() = webView.invoke("toggleFullscreen")
-  override fun addListener(listener: YouTubePlayerListener) = listeners.add(listener)
-  override fun removeListener(listener: YouTubePlayerListener) = listeners.remove(listener)
+  override fun addListener(listener: YouTubePlayerListener) = synchronized(lock) { listeners.add(listener) }
+  override fun removeListener(listener: YouTubePlayerListener) = synchronized(lock) { listeners.remove(listener) }
+
+  fun getListeners(): Collection<YouTubePlayerListener> = synchronized(lock) { listeners.toList() }
 
   fun release() {
-    listeners.clear()
+    synchronized(lock) { listeners.clear() }
     mainThread.removeCallbacksAndMessages(null)
   }
 
@@ -109,17 +113,14 @@ internal class WebViewYouTubePlayer constructor(
 
   internal fun initialize(initListener: (YouTubePlayer) -> Unit, playerOptions: IFramePlayerOptions?, videoId: String?) {
     youTubePlayerInitListener = initListener
-    initWebView(playerOptions ?: IFramePlayerOptions.default, videoId)
-//    this.webViewClient = MyWebViewClient()
-//    this.setOnLongClickListener { true }
+    initWebView(playerOptions ?: IFramePlayerOptions.getDefault(context), videoId)
   }
 
-  // create new set to avoid concurrent modifications
-  override val listeners: Collection<YouTubePlayerListener> get() = _youTubePlayer.listeners.toSet()
+  override val listeners: Collection<YouTubePlayerListener> get() = _youTubePlayer.getListeners()
   override fun getInstance(): YouTubePlayer = _youTubePlayer
   override fun onYouTubeIFrameAPIReady() = youTubePlayerInitListener(_youTubePlayer)
-  fun addListener(listener: YouTubePlayerListener) = _youTubePlayer.listeners.add(listener)
-  fun removeListener(listener: YouTubePlayerListener) = _youTubePlayer.listeners.remove(listener)
+  fun addListener(listener: YouTubePlayerListener) = _youTubePlayer.addListener(listener)
+  fun removeListener(listener: YouTubePlayerListener) = _youTubePlayer.removeListener(listener)
 
   override fun destroy() {
     _youTubePlayer.release()
@@ -212,10 +213,3 @@ internal fun readHTMLFromUTF8File(inputStream: InputStream): String {
     }
   }
 }
-
-//private class MyWebViewClient : WebViewClient() {
-//
-//  override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-//    return true
-//  }
-//}
